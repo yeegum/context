@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.IRoleDao">
+
+<select id="getList" resultType="role">
+    SELECT * from role
+</select>
+
+    <select id="getRoleByuser" resultType="role">
+        select * from role r LEFT join user_role ur on r.roleid=ur.roleid where ur.userid=#{userid}
+    </select>
+
+    <!--<delete id="deleteone" >-->
+        <!--DELETE from gameuser WHERE id=#{id}-->
+    <!--</delete>-->
+  <delete id="deleterolebyuser" parameterType="int">
+      DELETE from user_role WHERE  userid=#{userid}
+  </delete>
+    <insert id="addroleuser">
+        INSERT into user_role VALUES (#{userid},#{roleid})
+    </insert>
+    <select id="getpagelist" resultType="role">
+        select t.*,tb.rolemname from role t right join(select rolename,group_concat(m.mname) rolemname from role r left join role_modular rm on r.roleid=rm.roleid left join modular m on m.mid=rm.mid group by rolename
+        <if test="rolename != null">
+            having r.rolename like concat('%',#{rolename},'%')
+        </if>
+        )tb on t.rolename=tb.rolename
+        <if test="midOne != null">
+            where t.roleid in(select ur2.roleid from role ur2  inner join role_modular rm2 on ur2.roleid=rm2.roleid where rm2.mid=#{midOne})
+        </if>
+    </select>
+    <insert id="addrole" parameterType="role" useGeneratedKeys="true" keyProperty="roleid" keyColumn="roleid">
+        INSERT  INTO  role(rolename) VALUES (#{rolename})
+    </insert>
+    <insert id="addrolemodular" >
+        INSERT INTO  role_modular VALUES (#{roleid},#{mid})
+    </insert>
+    <select id="getrolebyname" parameterType="role" resultType="role">
+        SELECT * from role WHERE rolename=#{rolename}
+    </select>
+    <delete id="deleterole">
+        DELETE FROM role WHERE roleid=#{roleid}
+    </delete>
+    <delete id="deleterolemodular">
+        DELETE FROM  role_modular WHERE roleid=#{roleid}
+    </delete>
+    <select id="getonebyroleid" resultType="role">
+        select * from role WHERE roleid=#{roleid}
+    </select>
+    <update id="updaterole">
+        UPDATE role set rolename=#{rolename} WHERE roleid=#{roleid}
+    </update>
+
+
+
+</mapper>

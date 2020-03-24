@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+	*{
+		padding: 0;
+		margin: 0;
+	}
+	li{
+		font-size: 12px;
+		list-style: none;
+		float: left;
+	}
+	a{
+		text-decoration:none;
+		color: black;
+	}
+	.place ul{
+		margin-left: 65px;
+		margin-top: -28px;
+	}
+	.tp{
+		margin: auto;
+		width: 972px;
+	}
+	.place{
+		width:1000px;
+		height: 40px;
+		margin: auto;
+		background:#ECF5F9;
+	}
+	.place a:hover{
+		color: #00A3AB;
+	}
+	.mid{
+		width:1000px;
+		height: 326px;
+		margin: auto;
+		
+	}
+	.mid_left{
+		float: left;
+		width: 170px;
+		height: 36px;
+		background:#F2F9FE;
+		outline: solid 1px #BDD7F0;
+	}
+	.mid_left a{
+		font-size: 12px;
+		font-weight: normal;
+		color: blue;
+		margin-left: 70px;
+	}
+	.mid_left a:hover{
+		text-decoration: underline;
+		color: red;
+	}
+	.mid_center{
+		float: left;
+		width: 536px;
+		height: 326px;
+		outline: solid 1px #C0DBF0;
+	}
+	.mid_center > div{
+		float: left;
+	}
+	.mid_center ul li{
+		width:61px;
+		height: 27px;
+		background: #4097C9;
+		margin-left: 7px;
+		text-align: center;
+		line-height: 27px;
+		border-radius: 4px;
+		color: white;
+		
+	}
+	.mid_center ul li:hover{
+		background: #096DAE;
+	}
+	.input{
+		width:360px;
+		height:35px;
+		margin-left: 18px;
+		margin-top: 12px;
+	}
+	.input2{
+		width: 136px;
+		height: 35px;
+		outline: solid 2px #CACACA;
+		margin-top: 12px;
+		margin-left: 20px;
+		text-align: center;
+		line-height: 35px;
+	}
+	.mid_right{
+		float: right;
+		width: 240px;
+		height: 108px;	
+		background: #F2F9FE;
+		text-align: center;
+		line-height: 108px;
+	}
+	
+	.tiaozhaun{
+		width: 185px;
+		margin-left:350px;
+/*		outline: solid 1px red;*/
+	}
+	
+	.footer{
+		width:980px;
+		height: 59px;
+	
+		margin: auto;
+		margin-top: 21px;
+/*		border-radius: 5px;*/
+	}
+	#btn{
+		width: 70px;
+		height: 30px;
+		background: #4097C8;
+	}
+	table{
+		text-align:center;
+	}
+	tr:hover{
+		background:#E4EAED;
+	}
+	</style>
+</head>
+
+<body>
+	<div class="tp">
+		<iframe src="top.html" width="972px" height="75px" scrolling="no" frameborder="0"></iframe>
+	</div>
+	
+	<div class="place">
+	<span style="font-weight:bold; margin-left:15px;line-height:40px;">
+		位置:
+	</span>
+		<ul>
+			<li><a href="">首页</a> &nbsp;>&nbsp;&nbsp;</li>
+			<li><a href="">学习</a> &nbsp;>&nbsp;&nbsp;</li>
+			<li><a href="">表单</a> &nbsp;</li>
+		</ul>
+	</div>
+	
+	<div class="mid">
+			
+			<div class="mid_left" style="font-size:14px;color:blue;font-weight: bold;padding-top: 5px;padding-left: 10px;">
+				分类导航
+				<a href="">更多</a>
+			</div>
+			
+			<div class="mid_center">
+			
+				<div class="input">
+					<input type="text" style="width:360px;height:35px;outline: solid 2px #CACACA;border:0px;">
+				</div>
+				
+				<div class="input2">
+					<a href="">搜索文档</a>
+				</div>
+				
+					<div style="width:300px;height: 30px;margin-left: 13px;margin-top:10px;">
+					<ul style="float: left">
+					<li>首页</li>
+					<li>上一页</li>
+					<li>下一页</li>
+					<li>尾页</li>
+					</ul>
+					</div>		
+					
+					<div style="width:200px;height: 30px;margin-top:10px;font-size: 13px; line-height: 30px;">
+						<p>总记录条数16条 共4页 当前第2页</p>
+					</div>
+					
+					<div class="tiaozhaun">
+						跳转至 &nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;页 <input type="button"  id="btn" value="GO" style="border:0px;outline: 0px; color:white;border-radius:4px;" >
+					</div>
+					<table>
+						<tr height="35px" >
+							<td width="171px"  >文件名</td>
+							<td width="100px">上传者</td>
+							<td width="265px">上传时间</td>
+						</tr>
+						<tr height="35px">
+							<td>如何学好Java</td>
+							<td>天晴</td>
+							<td>2017-02-26 00:00:00</td>
+						</tr>
+						<tr height="35px">
+							<td>mysql</td>
+							<td>wan</td>
+							<td>2017-02-26 00:00:00</td>
+						</tr>
+						<tr height="35px">
+							<td>jsp</td>
+							<td>sun</td>
+							<td>2017-02-26 00:00:00</td>
+						</tr>
+						<tr height="35px">
+							<td>jsp</td>
+							<td>sun</td>
+							<td>2017-02-26 00:00:00</td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="mid_right">
+				<a href="">上传文件</a>
+				</div>
+			</div>
+			
+			
+	</div>
+	
+	<div class="footer">
+		<iframe src="footer.html" width="980px" height="59px" frameborder="0"></iframe>
+	</div>
+</body>
+</html>

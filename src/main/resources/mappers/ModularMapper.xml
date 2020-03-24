@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.IModularDao" >
+
+
+    <select id="getModularByuser" resultType="modular">
+        select distinct m.* from modular m left join role_modular rm on m.mid=rm.mid left join user_role ur on rm.roleid = ur.roleid where ur.userid = #{userid};
+    </select>
+    <!--<delete id="deleteone" >-->
+        <!--DELETE from gameuser WHERE id=#{id}-->
+    <!--</delete>-->
+
+<select id="getlist" resultType="modular">
+    SELECT * from modular
+</select>
+    <select id="getmodularbyrole" resultType="modular">
+    select * from  modular m LEFT join role_modular rm on m.mid=rm.mid where rm.roleid=#{roleid}
+    </select>
+    <select id="getpage" resultType="modular">
+        select t.*, tb.modularrole from modular t right join (select t.mname, group_concat(r.rolename) modularrole from modular t,role_modular ur,role r where t.mid = ur.mid and r.roleid = ur.roleid
+        <if test="mname != null">
+            and t.mname like concat('%',#{mname},'%')
+        </if>
+        <if test="fid !=null">
+            and t.fid=#{fid}
+        </if>
+         GROUP BY T.mname)tb ON T.mname = TB.mname
+    </select>
+    <select id="getfm" resultType="modular">
+        select * from modular WHERE fid=0
+    </select>
+    <insert id="addm" useGeneratedKeys="true" keyProperty="mid" keyColumn="mid">
+        INSERT INTO modular(mname,url,fid) VALUES (#{mname},#{url},#{fid})
+    </insert>
+    <insert id="addmr">
+        INSERT INTO role_modular VALUES (#{roleid},#{mid})
+    </insert>
+    <select id="getmbymname" resultType="modular">
+        SELECT * FROM modular WHERE mname=#{mname}
+    </select>
+    <select id="getmbymid" resultType="modular">
+        SELECT * FROM modular WHERE mid=#{mid}
+    </select>
+    <select id="getmrbymid" resultType="role">
+        select * from  Role r LEFT join role_modular rm on r.roleid=rm.roleid where rm.mid=#{mid}
+    </select>
+    <update id="updatem" >
+        update modular set mname=#{mname},url=#{url}, fid=#{fid} WHERE mid=#{mid}
+    </update>
+    <delete id="deletermbymid">
+        DELETE  from role_modular WHERE mid=#{mid}
+    </delete>
+    <delete id="deletem">
+        DELETE  FROM modular WHERE  mid=#{mid}
+    </delete>
+    <select id="getrolemodularbyfid" resultType="int">
+        SELECT COUNT (*) FROM role_modular WHERE mid=#{mid} and roleid= #{roleid}
+    </select>
+</mapper>

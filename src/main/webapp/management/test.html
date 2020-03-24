@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+   <script src="/management/js/jquery3.3.1.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/lib/layui/css/layui.css"/>
+    <script type="text/javascript">
+      /*$(function(){
+            //不刷新页面的情况下对ajaxDept发起请求
+            var url = "ajaxDept";
+            $.post(url, function(data){//data是请求返回的数据
+                //alert(data.deptno + "," + data.dname + ", " + data.loc);
+            })
+        });*/
+      function renderForm(){
+          layui.use('form', function(){
+              var form = layui.form;//高版本建议把括号去掉，有的低版本，需要加(),只有执行了这一步，部分表单元素才会自动修饰成功
+              //但是，如果你的HTML是动态生成的，自动渲染就会失效
+              //因此你需要在相应的地方，执行下述方法来手动渲染，跟这类似的还有 element.init();
+              form.render('select');
+          });
+      }
+        function getSub() {
+            var url = "/test/ajaxSub";
+            $.post(url, function(data){
+                $(data).each(function(i, o){
+                    var str = "<option  value=" + o.sub_id;
+                    str += ">"+ o.sub_name + "</option>";
+                    $("#sub").append(str);
+                    renderForm();
+                })
+            })
+        }
+        setTimeout("getSub()", 100);
+
+      function getRel() {
+          var url = "/test/ajaxRel";
+          $.post(url, function(data){
+              $(data).each(function(i, o){
+                  var str = "<option  value=" + o.rel_id;
+                  str += ">"+ o.rel_name + "</option>";
+                  $("#rel").append(str);
+                  renderForm();
+              })
+          });
+
+      }
+      setTimeout("getRel()", 100);
+    </script>
+</head>
+<body>
+<br/>
+<br/>
+<form id="form1" class="layui-form"   method="post" style="width:600px;height:600px;margin: auto;margin-top: 100px;">
+
+    <div class="layui-inline">
+        <label class="layui-form-label"> 试卷名称：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="pname" class="layui-input" value="p11"/>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="layui-inline">
+        <label class="layui-form-label"> 所属科目：</label>
+        <div class="layui-input-inline">
+            <select name="sub" lay-verify="required"  id="sub">
+                <option value="">请选择科目</option>
+            </select>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="layui-inline">
+        <label class="layui-form-label"> 试卷模版：</label>
+        <div class="layui-input-inline">
+            <select name="rel" lay-verify="required" id="rel">
+                <option value="">请选择模版</option>
+            </select>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <div class="layui-inline">
+        <label class="layui-form-label"> 考试时长：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="lengthtime" class="layui-input" value="150"/>
+        </div>
+        <div class="layui-input-inline">分钟</div>
+    </div>
+    <br/>
+    <br/>
+    <div class="layui-inline">
+        <label class="layui-form-label">开始时间：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="startime" class="layui-input" id="startime" placeholder="yyyy-MM-dd HH:mm:ss">
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="layui-inline">
+        <label class="layui-form-label">结束时间：</label>
+        <div class="layui-input-inline">
+            <input type="text" name="endtime" class="layui-input" id="endtime" placeholder="yyyy-MM-dd HH:mm:ss">
+        </div>
+    </div>
+    <!--<div class="layui-form-item">
+        <button class="layui-btn" lay-submit="" lay-filter="demo2"></button>
+    </div>-->
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="login">生成</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script >
+    $(function () {
+        layui.use('form', function() {
+            var form = layui.form;
+            form.render();
+        });
+    });
+    layui.use('form', function(){
+        var form = layui.form;//高版本建议把括号去掉，有的低版本，需要加(),只有执行了这一步，部分表单元素才会自动修饰成功
+        //但是，如果你的HTML是动态生成的，自动渲染就会失效
+        //因此你需要在相应的地方，执行下述方法来手动渲染，跟这类似的还有 element.init();
+        form.render( );
+        //监听提交
+        form.on('submit(login)', function(data){
+            var url = "/test/CreatePaper";
+            /*$.post(url,$("#form1").serialize(),function (data) {
+                alert(data.msg);
+                /!*if(data.code=="201"){
+                    layer.msg(data.msg,function(){
+                        location.href='test.html'
+                    });
+                }else{
+                    layer.msg(data.msg);
+                }*!/
+            });*/
+            $.ajax({
+                type: "POST",
+                url: url,
+                data:$("#form1").serialize(),
+                success: function (data) {
+                    if (data.code == 200) {
+                        /* layer.msg(data.msg, {time: 3000});
+                          setTimeout("location.href='{pageContext.request.contextPath}'+'/login.html'",3500);*/
+                        layer.alert("生成成功", {icon: 6, time:2500},function () {
+                            parent.location.reload();
+                            // 获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //关闭当前frame
+                            parent.layer.close(index);
+                        });
+                    } else {
+                        layer.msg(data.msg, {time: 3000});
+                        window.location.reload();
+                    }
+                },
+                error: function () {
+                    layer.alert("生成失败",
+                        {icon: 6, time:1500,yes:function(index ,layero){
+                                layer.close(index); //关闭弹出框
+                            }});
+                }
+              /*  success: function(data){
+                    if(data.code==200){
+                        layer.msg(data.msg,{time:2000});
+                        location.href='login.html'
+                    }else {
+                        layer.msg(data.msg,{time:3000});
+                        window.location.refresh() ;
+                    }
+                },
+                error: function(){
+                    alert("提交失败");
+                    window.location.refresh() ;
+                }*/
+            });
+            return false;
+        });
+    });
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //同时绑定多个
+        lay('#startime').each(function(){
+            laydate.render({
+                elem: this
+                ,format:'yyyy-MM-dd HH:mm:ss'
+                ,type:'datetime'
+                ,trigger: 'click'
+                ,theme: '#E70012'
+            });
+        });
+        lay('#endtime').each(function(){
+            laydate.render({
+                elem: this
+                ,format:'yyyy-MM-dd HH:mm:ss'
+                ,type:'datetime'
+                ,trigger: 'click'
+                ,theme: '#E70012'
+            });
+        });
+
+        // //日期时间选择器
+        // laydate.render({
+        //     elem: '#startime'
+        //     ,type: 'datetime'
+        //     ,theme: '#E70012'
+        // });
+        // laydate.render({
+        //     elem: '#endtime'
+        //     ,type: 'datetime'
+        //     ,theme: '#E70012'
+        // });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.ITestDao">
+   <!-- 增加试卷-->
+    <insert id="addPaper">
+        insert into test_par(rel_id,sub_id,par_name,test_start_time,test_end_time,test_length_time)
+        values(#{rel_id},#{sub_id},#{par_name},#{test_start_time},#{test_end_time},#{test_length_time})
+    </insert>
+    <!--获得科目-->
+    <select id="getSubs" resultType="sub">
+        select * from test_subs;
+    </select>
+   <!-- 获得模版-->
+    <select id="getRels" resultType="rel">
+        select * from test_rel
+    </select>
+    <!--根据模块ID查找题型和数量-->
+    <select id="getRelinfoById" resultType="relInfo">
+        select * from test_rel_info where rel_id=#{relid}
+    </select>
+    <!--根据名称查找试卷ID-->
+    <select id="getPaperByname" resultType="paper">
+        select * from test_par where par_name=#{name}
+    </select>
+    <!--根据题型数量和科目ID随机分配题目-->
+    <select id="getQues" resultType="que">
+        select * from que where sub_id=#{subid} and que_type_id=#{type} order by rand() limit #{amount}
+    </select>
+    <!--将分配的题目插入试卷题目表-->
+    <insert id="addParQues" parameterType="java.util.List">
+        insert into par_que(par_id,que_id)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.par_id},#{item.que_id})
+        </foreach>
+    </insert>
+    <!--获得题目表-->
+    <select id="getQueList" resultType="que">
+        select * from que
+    </select>
+    <!--获得题型表-->
+    <select id="getTypeList" resultType="queType">
+        select * from que_type
+    </select>
+    <!--添加问题-->
+    <insert id="addQue">
+        insert into que(sub_id,que_type_id,right_ask,ask)
+        values (#{sub_id},#{que_type_id},#{right_ask},#{ask})
+    </insert>
+    <!--添加选项表-->
+    <insert id="addOption" parameterType="java.util.List">
+        insert into que_option(que_id,statement,que_op,status)
+         values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.que_id},#{item.statement},#{item.que_op},#{item.status})
+        </foreach>
+    </insert>
+    <!--获得最近一次添加的题目-->
+    <select id="getQue" resultType="que">
+       select * from que ORDER BY que_id desc limit 1
+    </select>
+    <!--批量删除题目-->
+    <delete id="delQueById">
+        delete from que where que_id in
+        <foreach collection="list" open="(" close=")"
+                 item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="delOptionByQueId">
+        delete from que_option where que_id in
+        <foreach collection="list" open="(" close=")"
+                 item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据ID获得题目信息-->
+    <select id="getQueById" resultType="Que">
+        select * from que where que_id=#{id}
+    </select>
+    <!--修改题目-->
+    <update id="queChange">
+        update que set sub_id=#{sub_id},que_type_id=#{que_type_id},right_ask=#{right_ask},ask=#{ask}
+        where que_id=#{que_id}
+    </update>
+    <!--获得选项信息-->
+    <select id="getOptionsByQueId" resultType="QueOption">
+        select * from que_option where que_id=#{que_id}
+    </select>
+    <!--修改选项信息-->
+    <update id="altOps" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update que_option
+            <set>
+                statement=#{item.statement},status=#{item.status}
+            </set>
+            where que_id = #{item.que_id} and que_op=#{item.que_op}
+        </foreach>
+    </update>
+    <!--删除试卷-->
+    <delete id="delPaper">
+        delete from test_par where par_id=#{par_id}
+    </delete>
+    <!--删除试卷题目对应记录-->
+    <delete id="delPRQ">
+        delete from par_que where par_id=#{par_id}
+    </delete>
+    <!--修改试卷-->
+    <update id="altPaper">
+        update test_par set par_name=#{par_name},test_start_time=#{test_start_time},
+        test_end_time=#{test_end_time},test_length_time=#{test_length_time}
+        where par_id=#{par_id}
+    </update>
+    <!--发布试卷-->
+    <update id="issue">
+        update  test_par set status=#{status}
+        where par_id=#{par_id}
+    </update>
+    <!--获得科目名称-->
+    <select id="getSubName" resultType="java.lang.String">
+        select sub_name from test_subs where sub_id=#{id}
+    </select>
+    <!--根据ID获得模块名-->
+    <select id="getRelName" resultType="java.lang.String">
+        select rel_name from test_rel where rel_id=#{id}
+    </select>
+    <!--获得试卷列表-->
+    <select id="getPapers" resultMap="paperMapper">
+        select * from test_par
+    </select>
+    <resultMap id="paperMapper" type="paper">
+        <id column="par_id" property="par_id"/>
+        <result column="sub_id" property="sub_id"/>
+        <result column="rel_id" property="rel_id"/>
+        <association property="sub_name" column="sub_id"
+                     select="com.sc.exam.dao.ITestDao.getSubName"/>
+        <association property="rel_name" column="rel_id"
+                     select="com.sc.exam.dao.ITestDao.getRelName"/>
+    </resultMap>
+    <select id="queSearch" resultType="que">
+        select * from que where  sub_id=#{sub} and ask like #{ask}
+    </select>
+</mapper>

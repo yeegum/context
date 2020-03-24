@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<link href="../css/makefriends.css" rel="stylesheet" />
+</head>
+
+<body>
+<div id="top">
+<iframe src="top.jsp" width="972px" height="75px" scrolling="no" frameborder="0px"></iframe>
+</div>
+<div id="main">
+	<div id="main_top">
+	<ul>
+	<a href="javascript:change('form');"><li>我的好友</li></a>
+	<a href="javascript:change('form');"><li>陌生人</li></a>
+	<a href="javascript:change('form');"><li>黑名单</li></a>
+	<a href="javascript:change('form1');"><li>好友申请</li></a>
+	<a href="javascript:change('form2');"><li>发邮件</li></a>
+	<a href="javascript:change('form3');"><li>收件箱</li></a>
+	<a href="javascript:change('form4');"><li>发件箱</li></a>
+	<a href="javascript:change('form5');"><li>回收站</li></a>
+	</ul>
+	</div>
+	<div id="main_content">
+		<div style="width: 970px;height: 180px;text-align: center;">
+		<form action="" method="post" id="form" class="form" name="form">
+			<table>
+				<tr style="background: #D5DBE6;font-weight: bold;">
+					<td style="width: 70px;">好友头像</td>
+					<td>昵称</td>
+					<td>性别</td>
+					<td>年龄</td>
+					<td style="width: 540px;">操作</td>
+				</tr>
+				<tr>
+					<td><img src="../images/a5.jpg" width="50" height="50"></td>
+					<td></td>
+					<td>男</td>
+					<td>18</td>
+					<td colspan="2" align="center">
+						<a href="" style="color: #8455F2;">发邮电</a>
+						<a href="" style="color: #8455F2;">解除好友</a>
+						<a href="" style="color: #8455F2;">屏蔽拉黑</a>
+					</td>
+				</tr>
+			</table>
+			<p>您暂时没有好友哦，赶快去添加吧！</p>
+			<div>
+				<input type="button" value="首页" />
+				<input type="button" value="上一页" />
+				<input type="button" value="下一页" />
+				<input type="button" value="尾页" />
+				<span>总记录数16条&nbsp;共4页&nbsp;当前第1页</span>
+			</div>
+			<div class="go">
+				<span>跳转至<input type="text" style="width: 50px;text-align: center" value="1">页</span>
+				<input type="button" value="GO" />
+			</div>
+		</form>
+		<form action="" method="post" id="form1" class="form" name="form1" style="margin-left: 20px;font-size: 14px;">
+			<table>
+				<tr style="background: #D5DBE6;font-weight: bold;">
+					<td width="100" >用户头像</td>
+					<td width="300">请求描述</td>
+					<td width="100">性别</td>
+					<td width="250">请求时间</td>
+					<td width="176">操作</td>
+				</tr>
+				<tr>
+					<td><img src="../images/a5.jpg" width="50" height="50"></td>
+					<td>您正在加为好友</td>
+					<td>男</td>
+					<td></td>
+					<td align="center">
+						<a href="" style="color: #8455F2;">添加好友</a>
+						<span>等待对方回复请求</span>
+					</td>
+				</tr>
+			</table>
+			<div>
+				<input type="button" value="首页" />
+				<input type="button" value="上一页" />
+				<input type="button" value="下一页" />
+				<input type="button" value="尾页" />
+				<span>总记录数16条&nbsp;共4页&nbsp;当前第1页</span>
+			</div>
+			<div class="go">
+				<span>跳转至<input type="text" style="width: 50px;text-align: center" value="1">页</span>
+				<input type="button" value="GO" />
+			</div>
+		</form>
+		<form action="" method="post" id="form2" name="form2" style="margin-left: 20px;font-size: 14px;">
+			<table style="margin-left: 70px">
+				<tr style="text-align:center">
+					<td width="238" height="19" bgcolor="#D5DBE6" style="font-weight: bold;">收件人昵称</td>
+					<td style="margin-left: 10px">
+						<input id="mail_name" type="text" onBlur="b()"/>
+					</td>
+				</tr>
+				<tr>
+					<td bgcolor="#D5DBE6">发件标题</td>
+					<td>
+						<input type="text" />
+					</td>
+				</tr>
+				<tr>
+					<td bgcolor="#D5DBE6">发件内容：</td>
+					<td>
+						<textarea style="margin-left: 20px;outline: none;border:1px solid #46586a;" cols="70" rows="14"></textarea>
+					</td>
+				</tr>
+			</table>
+			<input type="button" value="发送" />
+			<input type="button" value="放弃编辑" />
+		</form>
+		<form action="" method="post" id="form3" class="form" name="form3" style="margin-left: 20px;font-size: 14px;">
+			<table>
+				<tr style="background: #D5DBE6;font-weight: bold;">
+					<td width="125" >发件人昵称</td>
+					<td width="100">发件标题</td>
+					<td width="100">发件时间</td>
+					<td width="235">邮件状态</td>
+					<td width="366">操作</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td>该邮件未被查看&nbsp;回收</td>
+					<td align="center">
+						<a href="" style="color: #8455F2;">查看邮件</a>
+						<a href="" style="color: #8455F2;">回复邮件</a>
+						<a href="" style="color: #8455F2;">移除至回收站</a>
+					</td>
+				</tr>
+			</table>
+			<p style="margin-top: 10px;font-size: 16px;">您暂时没有好友哦，赶快去添加吧！</p>
+			<div>
+				<input type="button" value="首页" />
+				<input type="button" value="上一页" />
+				<input type="button" value="下一页" />
+				<input type="button" value="尾页" />
+				<span>总记录数16条&nbsp;共4页&nbsp;当前第1页</span>
+			</div>
+			<div class="go">
+				<span>跳转至<input type="text" style="width: 50px;text-align: center" value="1">页</span>
+				<input type="button" value="GO" />
+			</div>
+		</form>
+		<form action="" method="post" id="form4" class="form" name="form4" style="margin-left: 20px;font-size: 14px;">
+			<table>
+				<tr style="background: #D5DBE6;font-weight: bold;">
+					<td width="199" >发件人昵称</td>
+					<td width="160">发件标题</td>
+					<td width="160">发件时间</td>
+					<td width="409">操作</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td align="center">
+						<a href="" style="color: #8455F2;">查看邮件</a>
+						<a href="" style="color: #8455F2;">移除至回收站</a>
+					</td>
+				</tr>
+			</table>
+			<p style="margin-top: 10px;font-size: 16px;">您暂时没法有发送邮件哦，赶快去和好友联络感情吧！</p>
+			<div>
+				<input type="button" value="首页" />
+				<input type="button" value="上一页" />
+				<input type="button" value="下一页" />
+				<input type="button" value="尾页" />
+				<span>总记录数16条&nbsp;共4页&nbsp;当前第1页</span>
+			</div>
+			<div class="go">
+				<span>跳转至<input type="text" style="width: 50px;text-align: center" value="1">页</span>
+				<input type="button" value="GO" />
+			</div>
+		</form>
+		<form action="" method="post" id="form5" class="form" name="form5" style="margin-left: 20px;font-size: 14px;">
+			<table>
+				<tr style="background: #D5DBE6;font-weight: bold;">
+					<td width="414" >邮件类型</td>
+					<td width="159">发件标题</td>
+					<td width="160">发件时间</td>
+					<td width="195">操作</td>
+				</tr>
+				<tr>
+					<td>发送的邮件&nbsp;收到的邮件</td>
+					<td></td>
+					<td></td>
+					<td align="center">
+						<a href="" style="color: #8455F2;">恢复该邮件</a>
+					</td>
+				</tr>
+			</table>
+			<p style="margin-top: 10px;font-size: 16px;">您暂时没法有发送邮件哦，赶快去和好友联络感情吧！</p>
+			<div>
+				<input type="button" value="首页" />
+				<input type="button" value="上一页" />
+				<input type="button" value="下一页" />
+				<input type="button" value="尾页" />
+				<span>总记录数16条&nbsp;共4页&nbsp;当前第1页</span>
+			</div>
+			<div class="go">
+				<span>跳转至<input type="text" style="width: 50px;text-align: center" value="1">页</span>
+				<input type="button" value="GO" />
+			</div>
+		</form>
+		</div>
+	</div>
+</div>
+<div id="foot">
+	<iframe src="footer.html" width="980px" height="59px" frameborder="0"></iframe>
+</div>
+</body>
+<script>
+	var f = document.getElementById("form");
+	var f1 = document.getElementById("form1");
+	var f2 = document.getElementById("form2");
+	var f3 = document.getElementById("form3");
+	var f4 = document.getElementById("form4");
+	var f5 = document.getElementById("form5");
+	var man = document.getElementById("mail_name");
+	function change(x){
+			f.style.display = "none";
+			f1.style.display = "none";
+			f2.style.display = "none";
+			f3.style.display = "none";
+			f4.style.display = "none";
+			f5.style.display = "none";
+		var x= document.getElementById(x);
+		x.style.display = "block";
+	}
+	function b(){
+		if(man.value == 0)
+		alert("收件人不能为空！");
+	}
+	</script>
+</html>

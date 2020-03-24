@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.IPlateDao">
+    <select id="getAllPlate" resultType="plate">
+        select * from plate
+    </select>
+    <insert id="addPlate">
+        insert into plate(plate_type,plate_plateimg,plate_status)
+         values (#{plate_type},#{plate_plateimg},#{plate_status})
+    </insert>
+    <delete id="delPlate">
+        delete  from plate where plate_id=#{id}
+    </delete>
+    <update id="changeStatusPlate">
+        update plate set plate_status=#{status} where plate_id=#{id}
+    </update>
+    <update id="changePlate">
+        update plate set plate_type=#{plate_type} ,
+        plate_plateimg=#{plate_plateimg},plate_status=#{plate_status}
+        where plate_id=#{plate_id}
+    </update>
+    <delete id="delListPlate">
+        delete from plate where plate_id in
+        <foreach collection="list" open="(" close=")"
+                 item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="findSingerPlate" resultType="plate">
+          select * from plate where plate_id=#{id}
+    </select>
+    <resultMap id="postsforum" type="plate">
+    <!--
+    1-N关联查询
+    property配置类中的属性名
+    column配置关联的字段名
+    select配置关联表的id
+    ofType配置关联表的路径名或类的别名
+    -->
+    <id column="plate_id" property="plate_id"></id>
+    <collection property="posts" column="plate_id" select="com.sc.exam.dao.IPostDao.getPostsByPlateLimter" ofType="posts"></collection>
+</resultMap>
+    <select id="getUserPlate" resultMap="postsforum" >
+            select * from plate where plate_status=1
+    </select>
+    <select id="likeNamePlate" resultType="plate">
+          select * from plate where plate_type like #{plateName}
+    </select>
+</mapper>

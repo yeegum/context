@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+
+<!--引用外部css文件forum_inside.css-->
+<link type="text/css" href="../css/forum_outside.css" rel="stylesheet" />
+
+<!--引用外部js文件forum_inside.js-->
+<script type="text/javascript" src="../js/forum_outside.js"></script>
+</head>
+
+<body onLoad="createceng();">
+
+<div style="width:972px; height:75px;margin: auto;"> 
+	<iframe src="top.html" frameborder="0" width="972" height="200"></iframe>
+	</div>
+
+<!--给内容套上一个div，防止分辨率改变，内容位置发生变化,forum_outside_container开始-->
+    <div class="forum_outside_container">
+    
+    
+   <!-- forum_inside_container_theme开始-->
+	<div class="forum_outside_container_theme">
+	安卓是最好的手机
+	</div>
+	<!--forum_inside_container_theme结束-->
+	
+	<!--forum_inside_container_center开始-->
+		<div class="forum_inside_container_center" id="forum_inside_container_center">
+	
+		<!--	<div class="louzhu">
+			
+			<div class="louzhu_left_out">
+				<div class="louzhu_left"></div>
+				<div style="margin-right: 20px;margin-top: 50px;width: 60px;height: 50px;text-align: center;color:red;float: right;outline: solid 1px red;font-size: 14px;
+				">楼主<br/>javasun</div>
+			</div>
+			
+				<div class="louzhu_right">
+					<div class="order">第一楼</div>
+				</div>
+			</div>-->
+			
+			
+			<!--<div class="lou">
+			
+			<div class="louzhu_left_out">
+				<div class="louzhu_left"></div>
+				<div style="margin-right: 20px;margin-top: 50px;width: 60px;height: 50px;text-align: center;float: right;outline: solid 1px red;font-size: 14px;
+				">天勤</div>
+			</div>
+			
+				<div class="louzhu_right">
+					<div class="order">第一楼</div>
+				</div>
+			</div>
+			
+			
+			<div class="lou">
+			
+			<div class="louzhu_left_out">
+				<div class="louzhu_left"></div>
+			</div>
+			
+				<div class="louzhu_right">
+					<div class="order">第一楼</div>
+				</div>
+			</div>
+			
+			
+			<div class="lou">
+			
+			<div class="louzhu_left_out">
+				<div class="louzhu_left"></div>
+			</div>
+			
+				<div class="louzhu_right">
+					<div class="order">第一楼</div>
+				</div>
+			</div>-->
+			
+			
+		</div>
+	<!--forum_inside_container_center结束-->
+	    
+	    <!--forum_outside_bottom开始-->
+		<div class="forum_outside_bottom">
+			<div class="forum_outside_bottom_top_left">
+				<input class="start_search" type="button" value="首页" onclick="first();"/>
+			<input class="start_search" id="previous_page" type="button" value="上一页" style="display: none;" onclick="previous();"/>
+			<input class="start_search"  id="next_page" type="button" value="下一页" onclick="next();"/>
+				<input class="start_search" type="button" value="尾页" onclick="last();"/>
+			<span class="forum_inside_bottom_word" id="forum_inside_bottom_word"></span>
+			</div>
+			
+			<div class="forum_outside_bottom_top_right">
+				跳转至&nbsp;<input type="text" style="width:40px;" name="page" id="page"/>&nbsp;页&nbsp;<input class="start_search" type="button" onClick="jump();" value="GO"/>
+			</div>
+			
+			<div style="float:left;width: 860px;">
+			<textarea style="width: 850px;height: 300px;"></textarea>
+			</div>
+			<div class="response_btn"><input  class="start_search" type="button"  style="width:100px;" value="回复" /></div>
+		</div>
+	   <!-- forum_outside_bottom结束-->
+	    
+	</div>
+	<!--forum_outside_container结束-->
+	
+	
+	<div style="width:980px; height:59px;margin: auto;"> 
+	<iframe src="footer.html" frameborder="0" width="972" height="200" scrolling="no"></iframe>
+	</div>
+</body>
+</html>

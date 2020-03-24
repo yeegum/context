@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.IPostDao">
+    <!--<resultMap id="postsmap" type="posts">-->
+        <!--&lt;!&ndash;-->
+        <!--1-N关联查询-->
+        <!--property配置类中的属性名-->
+        <!--column配置关联的字段名-->
+        <!--select配置关联表的id-->
+        <!--ofType配置关联表的路径名或类的别名-->
+        <!--&ndash;&gt;-->
+        <!--<id column="userid" property="user_id"></id>-->
+        <!--<association property="user_name" column="userid" select="com.sc.exam.dao.IPostDao.getUserName"></association>-->
+        <!--&lt;!&ndash;<collection property="posts" column="plate_id" select="com.sc.exam.dao.IPostDao.getPostsByPlateLimter" ofType="posts"></collection>&ndash;&gt;-->
+    <!--</resultMap>-->
+<select id="getAllPosts" resultType="posts">
+    select * from posts
+</select>
+<select id="getUserPosts" resultType="posts">
+     select * from posts where post_roof_placement=0 and post_essence=0 and  post_status=1
+</select>
+    <!--select * from posts where post_roof_placement=0 and post_essence=0-->
+<select id="getPostsByPlate" resultType="posts">
+     select * from posts where plate_typeid=#{id} and  post_status=1 and post_roof_placement=0
+</select>
+    <select id="getPostsByPlateLimter" resultType="posts">
+    select * from posts where plate_typeid=#{plateTypeId} and post_status=1 limit 5
+    </select>
+    <select id="getEssence" resultType="posts">
+     select * from posts where post_essence=1 and post_status=1  order by rand() limit 6
+    </select>
+    <select id="getRoofPlacement" resultType="posts">
+  select * from posts where post_roof_placement=1
+    </select>
+    <select id="getRoofPlacementByPlate" resultType="posts">
+         select * from posts where post_roof_placement=1 and plate_typeid=#{plateTypeId} and post_status=1
+    </select>
+    <select id="getEssenceByPlate" resultType="posts">
+         select * from posts where post_essence=1 and plate_typeid=#{plateTypeId}
+    </select>
+    <delete id="delPost">
+        delete   from posts where post_id=#{postid}
+    </delete>
+    <update id="changePostStatus">
+        update posts set post_status=#{status} where post_id=#{postid}
+    </update>
+    <insert id="addPost">
+        insert into posts(plate_typeid,post_content,post_image,post_title
+        ,user_id,user_name) values (#{plate_typeid},#{post_content},#{post_image},#{post_title},#{user_id},#{user_name})
+    </insert>
+    <update id="changePostsEssence">
+        update posts set post_essence=#{Essence} where post_id=#{postid}
+    </update>
+    <update id="changePostsRoofPlacement">
+          update posts set post_roof_placement=#{RoofPlacement} where post_id=#{postid}
+    </update>
+    <update id="changePosts">
+        update posts set post_status=#{post_status},
+        post_roof_placement=#{ post_roof_placement},post_essence=#{post_essence},post_content=#{post_content},
+        post_title=#{post_title},post_content=#{post_content},
+        post_image=#{post_image}
+        where  post_id=#{post_id}
+    </update>
+
+    <delete id="delListPost">
+        delete from posts where post_id in
+        <foreach collection="list" open="(" close=")"
+                 item="id" separator=",">
+        #{id}
+        </foreach>
+    </delete>
+    <select id="getOnePosts" resultType="posts">
+        select  * from posts where post_id=#{id}
+    </select>
+    <select id="getAllUserPostsByPlate">
+          select  * from posts where plate_typeid=#{plateTypeId} and post_status=1
+    </select>
+    <update id="addPostsTime">
+        update posts set post_numbers=post_numbers+1 where post_id=#{postid}
+    </update>
+    <select id="getUser" resultType="user">
+       select * from user where userid=#{user_id}
+    </select>
+    <select id="getHotPosts" resultType="posts">
+         select * from posts where post_status=1  order by  post_numbers   desc limit 8
+    </select>
+    <select id="findPostByTitleAndName"  resultType="posts">
+           select * from posts where post_title like #{title} and  user_name like #{name}
+            and post_status=1 order by post_id  desc
+    </select>
+    <!--  and plate_typeid like #{posts.plate_typeid}-->
+    <select id="findPostByTitle" resultType="posts">
+         select * from posts where post_title like #{title}
+    </select>
+</mapper>

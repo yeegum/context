@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.IUsersDao">
+    <!--注册用户-->
+    <insert id="regUser" parameterType="user">
+      insert into user(phone,account,password,ip,faceimg)
+      values (#{phone},#{account},#{password},#{ip},#{faceimg})
+  </insert>
+    <!--查询是今天的注册数量-->
+    <select id="countIpByTimeAndIp" resultType="Integer">
+    select count(*) from user
+    where ip = #{ip}
+    and date_format(registertime,'%Y-%m-%d')= date_format(now(),'%Y-%m-%d')
+    </select>
+    <select id="getPhone" resultType="String">
+        select phone from user where phone=#{phone}
+    </select>
+    <select id="userLoginByAccount" resultType="user">
+        select * from user where account=#{account}
+    </select>
+    <select id="userLoginByPwd" resultType="user">
+        select * from user where account=#{account} and password=#{password}
+    </select>
+    <!--修改最后一次登录时间-->
+    <update id="updateLastLonginTime">
+      update user set lastlogintime=#{lastlogintime} where account=#{account}
+    </update>
+    <update id="addIntegral">
+        update user set integral=#{integral} where userid=#{userid}
+    </update>
+    <update id="updateUser">
+      update user set nickname=#{nickname},introduce=#{introduce},address=#{address},email=#{email},age=#{age},
+      birthday=#{birthday},faceimg=#{faceimg},sex=#{sex}
+      where userid=#{userid}
+    </update>
+    <update id="updateUsers">
+      update user set nickname=#{nickname},introduce=#{introduce},address=#{address},email=#{email},age=#{age},
+      birthday=#{birthday},sex=#{sex}
+      where userid=#{userid}
+    </update>
+  <!--<delete id="logout">-->
+    <!--delete from user where userid=#{userid}-->
+  <!--</delete>-->
+  <select id="getList" resultType="user">
+    select * from user ORDER BY integral DESC
+  </select>
+
+  <!--根据id找到 user-->
+  <select id="getUserById" resultType="user">
+    select * from user where userid = #{userid}
+  </select>
+
+</mapper>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.IExamDao">
+
+    <!--根据试卷id 查找试卷-->
+    <select id="getPaperInfoById" resultType="paper">
+        select * from test_par
+        where par_id = #{par_id}
+    </select>
+
+    <!--根据试卷id查到的 模板id 再查分数对应的分数-->
+    <select id="getRelInfoByRelId" resultType="relInfo">
+        select * from test_rel_info
+        where rel_id = #{rel_id}
+    </select>
+    <!--得到typeid 对应的 类型名 对应关系-->
+    <select id="getTypeNameByRelId" resultType="String">
+        select type_name from que_type
+        where que_type_id = #{que_type_id}
+    </select>
+
+    <!--根据试卷id 查找对应生成的题目id-->
+    <select id="getQueIdListByParId" resultType="Integer">
+        select que_id from par_que
+        where par_id = #{par_id}
+    </select>
+
+    <!--根据题目id查找题目信息-->
+    <select id="getQueListByQueId" resultType="que">
+        select * from que
+        where que_id = #{que_id}
+    </select>
+    <!--根据题目，查找对应的选项-->
+    <select id="getOptionsByQueId" resultType="queOption">
+        select * from que_option
+        where que_id = #{que_id}
+    </select>
+
+
+
+    <!--根据userid 和 试卷id 查找 是否有考试记录-->
+    <select id="getExamRecordByUserIdAndParId" resultType="examRecord">
+        select * from exam_record
+        where userid = #{userid}
+        and par_id = #{par_id}
+    </select>
+
+    <!--插入一条用户考试记录-->
+    <insert id="insertExamRecordByUserIdAndParId">
+        insert into exam_record(userid,par_id)
+        values (#{userid},#{par_id})
+    </insert>
+
+    <!--查询用户的答题记录 根据userid，par_id-->
+    <select id="getUserAnswerList" resultType="userAnswer">
+        select * from user_answer
+        where par_id = #{par_id}
+        and userid = #{userid}
+    </select>
+
+
+
+    <!--答题过程-->
+    <!--在进入考试时,第一次进入时，先插入所有记录到用户答案表-->
+    <insert id="insertListToUserAnswer" parameterType="java.util.List">
+        insert into user_answer(userid,par_id,que_id,ask,right_ask,score,status)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.userid},#{item.par_id},#{item.que_id},#{item.ask},#{item.right_ask},#{item.score},#{item.status})
+        </foreach>
+    </insert>
+    <!--答题过程+交卷过程-->
+    <!--更新用户答案表-->
+    <update id="updateOneToUserAnswer" parameterType="userAnswer">
+        update user_answer
+        set ask = #{ask},score = #{score}, status = #{status},right_ask = #{right_ask}
+        where userid=#{userid} and par_id = #{par_id} and que_id = #{que_id};
+    </update>
+    
+    <!--从用户答案表中算出总分-->
+    <select id="getSumScoreByUserIdAndParId" resultType="Integer">
+        select sum(score) from user_answer
+        where userid=#{userid}
+        and par_id = #{par_id}
+    </select>
+    <!--将计算的总分和所用时间时间 更新到考试记录表中-->
+    <update id="updateOneToExamRecord">
+        update exam_record
+        set sum_score = #{sum_score},usetime = #{usetime}
+        where userid=#{userid} and par_id = #{par_id}
+    </update>
+
+
+
+    <!--查询 列表部分-->
+    <!--查询出某用户的 考试记录表 通过 userid-->
+    <select id="getExamRecordListByUserId" resultType="examRecord">
+        select * from exam_record
+        where userid = #{userid} and usetime is not null
+    </select>
+    <!--查询出 可以考试的试卷表-->
+    <select id="getExamPaperList" resultType="paper">
+        select * from test_par
+        where status = 1
+        order by par_id desc
+    </select>
+    <!--查询出 可以考试的试卷表-->
+    <select id="getExamPaperListByName" resultType="paper">
+        select * from test_par
+        where status = 1 and par_name like #{par_name}
+        order by par_id desc
+    </select>
+    <!--查询 试卷科目-->
+    <select id="getSubNameById" resultType="String">
+        select sub_name from test_subs
+        where sub_id=#{sub_id}
+    </select>
+
+
+
+    <!--学生查询 考试历史详细视图需要的额外数据-->
+    <select id="getAnalysisByQueId" resultType="queAnalysis">
+        select * from que_analysis
+        where que_id = #{que_id}
+    </select>
+
+    <!--admin 查询 额外数据-->
+    <!--查询 考试记录 通过par_id-->
+    <select id="getExamRecordListByParId" resultType="examRecord">
+        select * from exam_record
+        where par_id = #{par_id} and usetime is not null
+    </select>
+    <!--查询 考试记录 通过par_id 和其他的模糊查询-->
+    <select id="getExamRecordListByParIdByOther" resultType="examRecord">
+        select * from exam_record
+        where par_id = #{par_id} and usetime is not null
+        and sum_score >= #{startScore}
+        and #{endScore} >= sum_score
+    </select>
+    <!--查询 考试记录 通过par_id 和其他的模糊查询 和状态-->
+    <select id="getExamRecordListByParIdWithStatus" resultType="examRecord">
+        select * from exam_record
+        where par_id = #{par_id} and usetime is not null
+        and sum_score >= #{startScore}
+        and #{endScore} >= sum_score
+        and status = #{status}
+    </select>
+    <!--查询 试卷的模板名-->
+    <select id="getRelNameByRelId" resultType="String">
+        select rel_name from test_rel
+        where rel_id = #{rel_id}
+    </select>
+    <!--查询 用户account-->
+    <select id="getUserAccountByUserId" resultType="String">
+        select account from user
+        where userid = #{userid}
+    </select>
+
+    <!--审批试卷-->
+    <!--更新 用户记录表 的分数-->
+    <update id="updateScoreToUserAnswer" parameterType="userAnswer">
+        update user_answer
+        set  score = #{score}
+        where userid=#{userid} and par_id = #{par_id} and que_id = #{que_id};
+    </update>
+    <!--更新 考试记录表 的分数  管理员审批-->
+    <update id="updateExamRecordScore">
+        update exam_record
+        set sum_score = #{sum_score}
+        where userid=#{userid} and par_id = #{par_id}
+    </update>
+    <!--更新 考试记录表   管理员审批 状态-->
+    <update id="updateExamRecordStatus">
+        update exam_record
+        set status = #{status}
+        where userid=#{userid} and par_id = #{par_id}
+    </update>
+
+
+    <!--获得所有的rel 和 relname -->
+    <select id="getRelList" resultType="rel">
+        select * from test_rel
+    </select>
+    <!--更新 relname 更具 relid-->
+    <update id="updateRelNameByRelId">
+        update test_rel
+        set rel_name = #{rel_name}
+        where rel_id = #{rel_id}
+    </update>
+    <!--删除 rel 表-->
+    <delete id="delRelByRelId">
+        delete from test_rel
+        where rel_id = #{rel_id}
+    </delete>
+    <!--删除  relINfo 表-->
+    <delete id="delRelInfo">
+        delete from test_rel_info
+        where rel_id = #{rel_id}
+    </delete>
+
+    <!--更新 relinfo 中的题目数量和题目分数-->
+    <update id="updateRelInfoById">
+        update test_rel_info
+        set que_count = #{que_count},que_score = #{que_score}
+        where id = #{id}
+    </update>
+
+    <!--新增 模块表 -->
+    <insert id="insertRel" >
+        insert test_rel(rel_name)
+        values (#{rel_name})
+    </insert>
+    <!--得到 模块表 的id 根据 rel_name-->
+    <select id="getRelIdByRelName" resultType="Integer">
+        select rel_id from test_rel
+        where rel_name = #{rel_name}
+        order by rel_id desc
+        limit 1
+    </select>
+    <!--批量插入 relinfo 记录-->
+    <insert id="insertRelInfoList" parameterType="java.util.List">
+        insert into test_rel_info(rel_id,que_type_id,que_count,que_score )
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.rel_id},#{item.que_type_id},#{item.que_count},#{item.que_score})
+        </foreach>
+    </insert>
+
+    <!--获取科目列表-->
+    <select id="getSubList" resultType="sub">
+        select * from test_subs
+    </select>
+
+
+
+
+</mapper>

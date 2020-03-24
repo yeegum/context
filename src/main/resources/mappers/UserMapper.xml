@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.IUserDao">
+
+    <select id="getOne" resultType="user">
+     select * from USER WHERE account=#{account}
+    </select>
+    <select id="getOnebyid" resultType="user">
+        select * from USER WHERE userid=#{userid}
+    </select>
+    <select id="getList" resultType="user" parameterType="user">
+        select t.* ,tb.rolename from user t inner join
+        (select t.account,group_concat(r.rolename) rolename from user t, user_role ur,
+        role r where t.userid = ur.userid and r.roleid = ur.roleid
+        <if test="account != null">
+            AND t.account like concat('%',#{account},'%')
+        </if>
+        <if test="phone != null">
+            AND t.phone like concat('%',#{phone},'%')
+        </if>
+        <if test="sex != null">
+            AND t.sex = #{sex}
+        </if>
+        <if test="startTimeStr !=null">
+        and t.registertime >= str_to_date(#{startTimeStr},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="endTimeStr != null">
+        and t.registertime >= str_to_date(#{endTimeStr},'yyyy-mm-dd hh24:mi:ss')
+        </if>
+        <if test="roleId != null">
+            AND ur.roleid = #{roleId}
+        </if>
+        group by t.account)tb ON t.account=tb.account
+    </select>
+    <delete id="deleteone">
+        DELETE  FROM  USER  where userid=#{userid}
+    </delete>
+    <delete id="deleteroleuser">
+        DELETE  FROM  user_role  where userid=#{userid}
+    </delete>
+    <!--<delete id="deleteone" >-->
+        <!--DELETE from gameuser WHERE id=#{id}-->
+    <!--</delete>-->
+<update id="updateuser" parameterType="user">
+    UPDATE user SET
+    account=#{account}
+    <if test="nickname != null">
+        , nickname = #{nickname}
+    </if>
+    <if test="phone != null">
+        , phone = #{phone}
+    </if>
+    <if test="status != null">
+        , status = #{status}
+    </if>
+    <if test="sex != null">
+        , sex = #{sex}
+    </if>
+    WHERE userid=#{userid}
+</update>
+    <insert id="insertuser">
+        INSERT into user (account,nickname,sex,status,phone,password) VALUES (#{account},#{nickname},#{sex},#{status},#{phone},'81dc9bdb52d04dc20036dbd8313ed055')
+    </insert>
+    <update id="updatepasw">
+        UPDATE user set password='81dc9bdb52d04dc20036dbd8313ed055'WHERE userid=#{userid}
+    </update>
+
+</mapper>

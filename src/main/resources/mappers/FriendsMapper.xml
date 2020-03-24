@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.IFriendsDao">
+    <!--查找用户的所有好友-->
+    <select id="friendsList" resultType="user">
+    select * from user where userid in
+        (select apply_userid from friends where applied_userid=#{userid} and status=1
+        union
+        select applied_userid from friends where apply_userid=#{userid} and status=1)
+    </select>
+    <!--从好友列表删除好友-->
+    <delete id="delFriends">
+        DELETE from friends where STATUS=1 and((apply_userid=#{userid1} and applied_userid=#{userid2}) OR(
+apply_userid=#{userid2} and applied_userid=#{userid1}))
+    </delete>
+    <!--查看黑名单-->
+    <select id="blackList" resultType="user">
+    select * from user where userid in(
+        select apply_userid from friends where applied_userid=#{userid} and status=4
+        union
+        select applied_userid from friends where apply_userid=#{userid} and status=4)
+    </select>
+    <!--将好友列入黑名单-->
+    <update id="addBlackList">
+        update friends set status = 4 where (applied_userid=#{userid1} and apply_userid=#{userid2}) or (applied_userid=#{userid2} and apply_userid=#{userid1})
+    </update>
+
+    <!--解除黑名单-->
+    <update id="reFriendsList">
+        update friends set status = 1 where (applied_userid=#{userid1} and apply_userid=#{userid2}) or (applied_userid=#{userid2} and apply_userid=#{userid1})
+    </update>
+
+    <!--查看陌生人-->
+    <select id="selectStrange" resultType="user">
+        select * from user where userid!=#{userid} and userid not in(
+        select apply_userid from friends where applied_userid=#{userid}
+        union
+            select applied_userid from friends where apply_userid=#{userid}) order by rand()
+    </select>
+    
+    <!--查看申请好友关系表-->
+    <select id="selectWaitFriend" resultType="friends">
+        select * from friends where applied_userid=#{userid} and status=0
+    </select>
+
+    <!--&lt;!&ndash;增加申请好友记录    8.19 早上10.10&ndash;&gt;-->
+    <!--<insert id="addWaitFriend">-->
+        <!--insert into friends (apply_userid,applied_userid,apply_content,apply_datetime,status)-->
+         <!--values (#{apply_userid},#{applied_userid},#{apply_content},#{applyDateTime},0)-->
+    <!--</insert>-->
+    <!--增加申请好友记录-->
+    <insert id="addWaitFriend">
+        insert into friends (apply_userid,applied_userid,status)
+         values (#{apply_userid},#{applied_userid},0)
+    </insert>
+
+
+    <!--同意成为好友-->
+    <update id="addFriends">
+        update friends set status = 1 where applied_userid=#{userid2} and apply_userid=#{userid1}
+    </update>
+
+    <!--拒绝成为好友-->
+    <update id="rejectFriends">
+        update friends set status = 2 where applied_userid=#{userid2} and apply_userid=#{userid1}
+    </update>
+
+    <!--解除黑名单-->
+    <update id="reFriend">
+         update friends set status = 1
+         where ((applied_userid=#{userid1}
+         and apply_userid=#{userid2}) or (applied_userid=#{userid2} and apply_userid=#{userid1}))
+    </update>
+
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.INoteDao">
+    <insert id="AddNote">
+        insert into notes(title,path,userid,subtime,tid,sid,times) values (#{title},#{path},#{userid},#{subtime},
+        #{tid},#{sid},#{times})
+    </insert>
+
+    <select id="existnote" resultType="note">
+        select * from notes where path=#{path}
+    </select>
+
+    <select id="getUserById" resultType="user">
+        select * from user where userid = #{userid}
+    </select>
+
+    <select id="getTypeById" resultType="notetype">
+        select * from notetype where tid = #{tid}
+    </select>
+
+    <select id="getStatusById" resultType="noteStatus">
+        select * from notestatus where sid = #{sid}
+    </select>
+
+    <select id="getNoteType" resultType="notetype">
+        select * from notetype
+    </select>
+
+    <resultMap id="NoteMapper" type="note">
+        <result property="userid" column="userid"/>
+        <result property="tid" column="tid"/>
+        <result property="sid" column="sid"/>
+        <association property="user" column="userid" select="com.sc.exam.dao.INoteDao.getUserById"/>
+        <association property="notetype" column="tid" select="com.sc.exam.dao.INoteDao.getTypeById"/>
+        <association property="noteStatus" column="sid" select="com.sc.exam.dao.INoteDao.getStatusById"/>
+    </resultMap>
+
+    <select id="getNoteByStatus" resultMap="NoteMapper">
+        select * from notes where sid = #{sid}
+    </select>
+
+
+    <update id="changStatus">
+        update notes set sid = #{sid} where nid = #{nid}
+    </update>
+
+    <delete id="delNoteById">
+        delete from notes where nid = #{nid}
+    </delete>
+
+    <select id="getNoteById" resultMap="NoteMapper">
+        select * from notes where nid = #{nid}
+    </select>
+
+    <delete id="delNotesById">
+        delete from notes where nid in
+        <foreach collection="list" open="(" close=")"
+                 item="nid" separator=",">
+            #{nid}
+        </foreach>
+    </delete>
+
+    <update id="changeAllstauts">
+        update notes set sid = #{sid} where nid in
+        <foreach collection="list" open="(" close=")"
+                 item="nid" separator=",">
+            #{nid}
+        </foreach>
+    </update>
+
+    <update id="ChangeNoteByNid">
+        update notes set title = #{title},tid = #{tid} where nid = #{nid}
+    </update>
+
+    <update id="Addtimes">
+        update notes set times = #{times} where nid = #{nid}
+    </update>
+
+
+    <select id="getNotes" resultType="notes">
+        select n.nid,n.title,n.times,u.nickname,t.tname,n.path,n.subtime,n.sid,s.sname
+        from notes n,user u,notetype t,notestatus s
+        where n.userid = u.userid and n.tid = t.tid and n.sid = s.sid
+        <if test="userid == 0">
+            and n.sid = #{sid}
+        </if>
+        <if test="userid != 0">
+            and n.userid = #{userid}
+        </if>
+        <if test="title != null">
+            and n.title like #{title}
+        </if>
+        <if test="tid != 0">
+            and n.tid = #{tid}
+        </if>
+    </select>
+
+    <select id="getHotNotes" resultType="notes">
+        select n.nid,n.title,n.times,u.nickname,t.tname,n.path,n.subtime,n.sid,s.sname
+        from notes n,user u,notetype t,notestatus s
+        where n.userid = u.userid and n.tid = t.tid and n.sid = s.sid
+        and n.sid = 1 order by times desc limit 6
+    </select>
+
+</mapper>

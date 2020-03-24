@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.exam.dao.IEmailDao">
+    <!--收件箱-->
+    <select id="getRecvEmailList" resultType="email">
+        select u.nickname,e.* from user u join email e on e.send_userid=u.userid where e.recv_userid=#{userid} and e.status !=2 and e.status !=3
+    </select>
+    <!--收件箱点击已读-->
+    <update id="readRecvEmail">
+        update email set status = 1 where recv_userid=#{userid} and id=#{id}
+    </update>
+    <!--收件箱移至回收站-->
+    <update id="delRecvEmail">
+        update email set status = 2 where recv_userid=#{userid} and id=#{id}
+    </update>
+    <!--发件箱-->
+    <select id="getSendEmailList" resultType="email">
+        select u.nickname,e.* from user u join email e on e.recv_userid=u.userid where e.send_userid=#{userid} and e.status !=2 and e.status !=3
+    </select>
+    <!--发件箱点击已读-->
+    <update id="readSendEmail">
+        update email set status = 1 where send_userid=#{userid} and id=#{id}
+    </update>
+    <!--发件箱移至回收站-->
+    <update id="delSendEmail">
+        update email set status = 3 where send_userid=#{userid} and id=#{id}
+    </update>
+    <!--回收站-->
+    <select id="getRecycleEmailList" resultType="email">
+        select * from email where send_userid=#{userid} and status=3
+        union
+        select * from email where recv_userid=#{userid} and status=2
+    </select>
+    <!--从回收站移回-->
+    <update id="recovery">
+        update email set status = 0 where id=#{id}
+    </update>
+    <!--发封信-->
+    <insert id="sendEmail">
+        insert  into email (send_userid,recv_userid,topic,content,status)
+        values (#{send_userid},#{recv_userid},#{topic},#{content},#{status})
+    </insert>
+</mapper>

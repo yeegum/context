@@ -1,0 +1,128 @@
+/* CSS Document */
+*{
+	margin: 0px;
+	padding: 0px;
+}
+li{
+	list-style: none;
+}
+.main{
+	margin: auto; 
+	width: 980px;
+	height: 680px;
+	
+}
+.top{
+	width: 980px;
+	height: 75px;
+}
+.bot{
+	width: 980px;
+	height: 75px;
+}
+.mid{
+	width: 980px;
+	height: 460px;
+	
+}
+.midtop{
+	width: 980px;
+	height: 37px;
+	
+}
+.midtopleft{
+	width: 360px;
+	height: 37px;
+	
+	float: left;
+}
+.midtopright{
+	width: 300px;
+	height: 37px;
+	
+	float: left;
+	margin-left: 310px;
+}
+.midtopleft li{
+	text-align: center;
+	width: 120px;
+	line-height: 37px;
+	float: left;
+	color: white;
+}
+.midtopright li{
+	font-size: 14px;
+	line-height: 37px;
+	float: left;
+}
+.zhuxiao{
+	cursor: pointer;
+	width: 62px;
+	height: 28px;
+	background-color:#46586a;
+	margin-top: 5px;
+	margin-left: 3px;
+	border-radius: 7px 7px 7px 7px;
+	color: white;
+}
+.zhuxiao:hover{
+	background-color: #d05054;
+}
+.midtop2{
+	width: 980px;
+	height: 37px;
+	border-bottom: solid 1px #d0dee5;
+}
+.midmain{
+	width: 980px;
+	height: 370px;
+	
+}
+.midmain1{
+	width: 480px;
+	height: 85px;
+	
+}
+.midmain2{
+	width: 480px;
+	height: 85px;
+	float: left;
+	display: none;
+	
+}
+.midmain3{
+	width: 480px;
+	height: 85px;
+	float: left;
+	display: none;
+
+}
+.midmain4{
+	margin-left: 200px;
+	margin-top: 20px;
+	width: 61px;
+	height: 28px;
+	
+	cursor: pointer;
+	background-color:#46586a;
+	border-radius: 7px;
+	color: white;
+}
+.pamidmain4{
+	width: 800px;
+	float: left;
+}
+.midmain4:hover{
+	background-color: #d05054;
+}
+.midmain li{
+	margin-left: 30px;
+	text-align: center;
+	line-height: 85px;
+	font-size: 10px;
+	float: left;
+}
+.bord{
+	border: solid 1px #46586a;
+	border-radius: 0px 5px 5px 5px;
+}
